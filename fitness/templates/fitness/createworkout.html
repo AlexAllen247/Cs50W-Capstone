@@ -1,0 +1,25 @@
+{% extends "fitness/layout.html" %}
+
+{% block title %} Create Workout {% endblock %}
+
+{% block body %}
+<h1 class="text-center text-primary title">Create Workout</h1>
+<hr>
+<br>
+<div class="container card shadow-m divcard d-flex justify-content-center w-25 m-auto p-1"
+    style="background-color: #eee;">
+    <div class="set-group row justify-content-center align-items-center">
+        <form action="{% url 'createworkout' %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }} {{ field }}
+            </div>
+            {% endfor %}
+            <div class="form-group my-4">
+                <button type="submit" class="btn btn-primary btn-customized btn-block">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

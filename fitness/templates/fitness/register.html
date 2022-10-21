@@ -1,0 +1,56 @@
+{% extends "fitness/layout.html" %}
+
+{% block body %}
+<section class="">
+  <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+    <div class="container">
+      <div class="row gx-lg-5 align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <h1 class="my-5 display-3 fw-bold ls-tight">
+            Take your training <br />
+            <span class="text-primary">to the next level!</span>
+          </h1>
+          <p style="color: hsl(217, 10%, 50.8%)">
+            Use the app to create long term fitness goals and to keep track of your workout progress. Your Personal
+            Trainer
+            will help you keep yourself accountable. <a href="{% url 'register' %}">Register now</a> to achieve your
+            health and fitness goals!
+          </p>
+        </div>
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="card">
+            <div class="card-body py-5 px-md-5">
+              {% if message %}
+              <div>{{ message }}</div>
+              {% endif %}
+              <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" type="email" name="email" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" type="password" name="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                  <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+                </div>
+                <div class="form-group row justify-content-md-center">
+                  <input class="btn btn-primary" type="submit" value="Register">
+                </div>
+              </form>
+              <div class="form-group row justify-content-md-center">
+                <p>Already have an account? <a href="{% url 'login' %}">Log In here.</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+{% endblock %}

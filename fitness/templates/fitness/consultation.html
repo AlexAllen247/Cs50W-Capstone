@@ -1,0 +1,27 @@
+{% extends "fitness/layout.html" %}
+
+{% block title %}Consultation{% endblock %}
+
+{% block body %}
+<h1 class="text-center text-primary title">Consultation</h1>
+<hr>
+<br>
+<div class="container card shadow-m divcard d-flex justify-content-center w-75 m-auto p-1"
+    style="background-color: #eee;">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-8 col-md-8 col-lg-6 pt-2">
+            <form action="{% url 'consultation' %}" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }} {{ field }}
+                </div>
+                {% endfor %}
+                <div class="form-group my-4">
+                    <button type="submit" class="btn btn-primary btn-customized btn-block">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

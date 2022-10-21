@@ -1,0 +1,71 @@
+{% extends "fitness/layout.html" %}
+
+{% block title %} Client Workouts {% endblock %}
+
+{% block body %}
+<input id="userID" value="{{ user.id }}" type="hidden">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 my-2 p-4 bg-light text-center">
+            <h2 class="text-center text-primary">{{ user.username }}'s Workouts</h2>
+        </div>
+    </div>
+</div>
+<div class="card shadow-sm divcard text-center d-flex justify-content-center w-50 m-auto p-2"
+    style="background-color: #eee;">
+    {% for workout in workout %}
+    <div class="post">
+        <div class="card shadow-sm divcard">
+            <div class="card-body">
+                <h3>{{ workout.name }}</h3>
+                <small class="pl-2 text-muted">Posted on {{ workout.timestamp }}</small>
+                <hr>
+                <div style="overflow-x:auto;">
+                    <table class="table" id="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Exercise</th>
+                                <th scope="col">Body Part</th>
+                                <th scope="col">Sets/Reps/Weight</th>
+                                <th scope="col">Update</th>
+                            </tr>
+                        </thead>
+                        {% for exercise in workout.exercises.all %}
+                        <tbody>
+                            <tr>
+                                <td><a href="{{ exercise.video_link }}" target="_blank">{{ exercise.name }}</a></td>
+                                <td>{{ exercise.body_part }}</td>
+                                <td id="exercise_{{ exercise.id }}">{{ exercise.exercise_info }}</td>
+                                <td><button type="button" id="update_exercise" type="button"
+                                        onclick="updateExercise({{ exercise.id }})"
+                                        class="updateexercise btn btn-sm btn-outline-primary">Update</button></td>
+                            </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <h2>No plan</h2>
+    {% endfor %}
+</div>
+<div class="pagination justify-content-center pb-4">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

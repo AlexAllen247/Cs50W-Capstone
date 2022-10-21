@@ -1,0 +1,58 @@
+{% extends "fitness/layout.html" %}
+
+{% block title %} Answer {% endblock %}
+
+{% block body %}
+<h1 class="text-center text-primary title">Answer</h1>
+<hr>
+<br>
+<div class="container card shadow-m divcard d-flex justify-content-center w-75 m-auto p-1"
+    style="background-color: #eee;">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-8 col-md-8 col-lg-6 pt-2">
+            <form action="{% url 'answer' %}" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }} {{ field }}
+                </div>
+                {% endfor %}
+                <div class="form-group my-4">
+                    <button type="submit" class="btn btn-primary btn-customized btn-block">Submit</button>
+                </div>
+            </form>
+            {% for question in question %}
+            <div class="card shadow-sm divcard text-center bg-secondary d-flex justify-content-center w-75 m-auto p-2">
+                <div class="post">
+                    <div class="card shadow-sm divcard">
+                        <div class="card-body">
+                            <h6><strong>{{ question.user }}</strong></h6>
+                            <small class="pl-2 text-muted">Submitted on {{ question.timestamp }}</small>
+                            <hr>
+                            <p>{{ question.question }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="pagination justify-content-center pb-4">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

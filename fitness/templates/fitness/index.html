@@ -1,0 +1,94 @@
+{% extends "fitness/layout.html" %}
+
+{% block title %} {{ user.username }} {% endblock %}
+
+{% block body %}
+{% if user.is_staff %}
+<input id="userID" value="{{ user.id }}" type="hidden">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 my-2 p-4 bg-light text-center">
+            <h2 class="text-center text-primary">{{ user.username }}'s Consultations</h2>
+        </div>
+    </div>
+</div>
+{% else %}
+<input id="userID" value="{{ user.id }}" type="hidden">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 my-2 p-4 bg-light text-center">
+            <h2 class="text-center text-dark">{{ user.username }}'s Plan</h2>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if user.is_staff %}
+{% for plan in plan %}
+<div class="card shadow-sm divcard text-center d-flex justify-content-center w-50 m-auto p-2"
+    style="background-color: #eee;">
+    <div class="post">
+        <div class="card shadow-sm divcard">
+            <div class="card-body">
+                <h5>{{ plan.user }}'s Consultation Answers</h5>
+                <small class="pl-2 text-muted">Submitted on {{ plan.timestamp }}</small>
+                <hr>
+                <p>Age: {{ plan.age }}</p>
+                <p>Gender: {{ plan.gender }}</p>
+                <p>Height in cms: {{ plan.height_in_cms }}</p>
+                <p>Weight in kgs: {{ plan.weight_in_kgs }}</p>
+                <p>Fitness Goal: {{ plan.fitness_goal }}</p>
+                <p>Exercise Experience: {{ plan.previous_exercise_experience }}</p>
+                <p>Current Activity Level: {{ plan.current_activity_level }}</p>
+                <p>Health History: {{ plan.any_injuries_or_underlying_health_conditions}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% empty %}
+<h2 class="text-center">No Current Consultations</h2>
+{% endfor %}
+{% else %}
+{% for plan in plan %}
+<div class="card shadow-sm divcard text-center d-flex justify-content-center w-50 m-auto p-2"
+    style="background-color: #eee;">
+    <div class="post">
+        <div class="card shadow-sm divcard">
+            <div class="card-body">
+                <h5>{{ plan.name }}</h5>
+                <small class="pl-2 text-muted">Created on {{ plan.timestamp }}</small>
+                <hr>
+                {% for workout in plan.workout.all %}
+                <table class="table">
+                    <tr>
+                        <td><a href="{% url 'clientworkouts' %}">{{ workout }}</a></td>
+                    </tr>
+                </table>
+                {% endfor %}
+                <p>{{ plan.training_notes }}</p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <h2 class="text-center">No Plan, complete a <a href="{% url 'consultation' %}">consultation form</a> to get your
+        plan and start achieving your fitness goals!</h2>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="pagination justify-content-center pb-4">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
